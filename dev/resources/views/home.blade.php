@@ -14,7 +14,7 @@
                 <a href="#matematicas" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Matemáticas</a>
                 <ul class="collapse list-unstyled" id="matematicas">
                     <li>
-                        <a href="#">Sessión 1</a>
+                        <a href="#">Sesión 1</a>
                     </li>
                     <li>
                         <a href="#">Sesión 2</a>
@@ -122,7 +122,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Mátematicas</h5>
                         <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                        <a href="#" class="btn btn-primary">Button</a>
+                        <a href="#" class="btn btn-primary">Empezar</a>
                     </div>
                 </div>
             </div>
@@ -134,20 +134,17 @@
                         <h5 class="card-title">Español</h5>
                         <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
                         <div class="row">
-                            <div class="col-md-2">
-                                <h6>Sesión 1</h6>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="progress">
-                                    <div class="progress-bar" role="progressbar" style="width:{{90}}%;"
-                                         aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                                        5 /
-                                        10
-                                    </div>
+                            <div class="col-sm-12 mb-3">
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width:{{90}}%;"
+                                     aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                    9 /
+                                    10
                                 </div>
                             </div>
+                            </div>
                         </div>
-                        <a href="#" class="btn btn-primary">Button</a>
+                        <a href="#" class="btn btn-primary">Continuar con las sesión 10</a>
                     </div>
                 </div>
             </div>
@@ -158,7 +155,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Card title</h5>
                         <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                        <a href="#" class="btn btn-primary">Button</a>
+                        <a href="#" class="btn btn-primary">Empezar</a>
                     </div>
                 </div>
             </div>
@@ -169,7 +166,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Card title</h5>
                         <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                        <a href="#" class="btn btn-primary">Button</a>
+                        <a href="#" class="btn btn-primary">Empezar</a>
                     </div>
                 </div>
             </div>
