@@ -72,9 +72,9 @@
             </div>
         </nav>
 
-       {{-- <main>--}}
+       <main class="pt-4">
         @yield('content')
-        {{--</main>--}}
+        </main>
         <!-- Footer -->
         <footer class="py-5 bg-dark">
             <div class="container">
