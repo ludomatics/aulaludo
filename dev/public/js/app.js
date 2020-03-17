@@ -1977,19 +1977,65 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mounted: function mounted() {
-    console.log('Component mounted.');
-  },
   data: function data() {
+    var indice = 0;
+    var respuesta = '';
     return {
-      viewName: 'Cuestionarios'
+      indice: indice,
+      respuesta: respuesta,
+      cuestionario: null,
+      preguntas: []
     };
   },
   methods: {
-    changeName: function changeName() {
-      this.viewName = 'Quizzes';
+    anterior: function anterior() {
+      if (this.indice !== 0) {
+        this.indice--;
+      }
+    },
+    siguiente: function siguiente() {
+      if (this.indice !== this.preguntas.length - 1) {
+        this.indice++;
+      }
+    },
+    guardarRespuesta: function guardarRespuesta() {
+      this.preguntas[this.indice].contestada = true;
     }
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    var url = window.location.origin + '/api/cuestionario/1';
+    axios.get(url).then(function (response) {
+      _this.cuestionario = response.data;
+      _this.preguntas = _this.cuestionario.preguntas;
+    });
+    console.log(this.cuestionario);
   }
 });
 
@@ -37421,10 +37467,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/Cuestionario.vue?vue&type=template&id=3ab6eb54&":
-/*!**********************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/pages/Cuestionario.vue?vue&type=template&id=3ab6eb54& ***!
-  \**********************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/Cuestionario.vue?vue&type=template&id=3ab6eb54&scoped=true&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/pages/Cuestionario.vue?vue&type=template&id=3ab6eb54&scoped=true& ***!
+  \**********************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -37438,34 +37484,131 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col-md-12" }, [
-        _c("div", { staticClass: "card" }, [
-          _c("div", { staticClass: "card-header" }, [
-            _vm._v("Example Component")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _c("p", [_vm._v("Sera la vista de los " + _vm._s(_vm.viewName))]),
+      _vm._m(0),
+      _vm._v(" "),
+      _vm.cuestionario
+        ? _c("div", { staticClass: "col-md-10 py-4" }, [
+            _vm.preguntas
+              ? _c("div", { staticClass: "card" }, [
+                  _c("div", { staticClass: "card-header" }, [
+                    _c("h5", { staticClass: "card-title" }, [
+                      _vm._v("Pregunta #")
+                    ]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "card-text" }, [
+                      _vm._v(
+                        " " +
+                          _vm._s(_vm.preguntas[_vm.indice].pregunta) +
+                          "\n                    "
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "card-body" },
+                    [
+                      _vm._l(_vm.preguntas[_vm.indice].opciones, function(
+                        opcion
+                      ) {
+                        return _c("div", { staticClass: "form-check" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.respuesta,
+                                expression: "respuesta"
+                              }
+                            ],
+                            staticClass: "form-check-input",
+                            attrs: {
+                              type: "radio",
+                              name: "pregunta-" + _vm.indice
+                            },
+                            domProps: {
+                              value: opcion,
+                              checked: _vm._q(_vm.respuesta, opcion)
+                            },
+                            on: {
+                              click: _vm.guardarRespuesta,
+                              change: function($event) {
+                                _vm.respuesta = opcion
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("label", { staticClass: "form-check-label" }, [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(opcion) +
+                                "\n                        "
+                            )
+                          ])
+                        ])
+                      }),
+                      _vm._v(" "),
+                      _c("p", [
+                        _vm._v("Tu respuesta es " + _vm._s(_vm.respuesta))
+                      ])
+                    ],
+                    2
+                  )
+                ])
+              : _vm._e(),
             _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-primary",
-                on: {
-                  click: function($event) {
-                    return _vm.changeName()
-                  }
-                }
-              },
-              [_vm._v("Cambiar Nombre")]
-            )
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-4 mt-2 text-left" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    on: { click: _vm.anterior }
+                  },
+                  [_vm._v("Anterior")]
+                )
+              ]),
+              _vm._v(" "),
+              _vm._m(1),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-4 mt-2 text-right" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary",
+                    on: { click: _vm.siguiente }
+                  },
+                  [_vm._v("Siguiente")]
+                )
+              ])
+            ])
           ])
-        ])
-      ])
+        : _vm._e()
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-12 text-center" }, [
+      _c("h4", [_vm._v("Cuestionario")]),
+      _vm._v(" "),
+      _c("h5", [_vm._v("Matemáticas. Jerarquía de operaciones")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-4 mt-2 text-center" }, [
+      _c("button", { staticClass: "btn btn-success" }, [
+        _vm._v("Lista reactivos")
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -52800,14 +52943,15 @@ __webpack_require__.r(__webpack_exports__);
 /*!*********************************************!*\
   !*** ./resources/js/pages/Cuestionario.vue ***!
   \*********************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Cuestionario_vue_vue_type_template_id_3ab6eb54___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Cuestionario.vue?vue&type=template&id=3ab6eb54& */ "./resources/js/pages/Cuestionario.vue?vue&type=template&id=3ab6eb54&");
+/* harmony import */ var _Cuestionario_vue_vue_type_template_id_3ab6eb54_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Cuestionario.vue?vue&type=template&id=3ab6eb54&scoped=true& */ "./resources/js/pages/Cuestionario.vue?vue&type=template&id=3ab6eb54&scoped=true&");
 /* harmony import */ var _Cuestionario_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Cuestionario.vue?vue&type=script&lang=js& */ "./resources/js/pages/Cuestionario.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _Cuestionario_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _Cuestionario_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -52817,11 +52961,11 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _Cuestionario_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Cuestionario_vue_vue_type_template_id_3ab6eb54___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _Cuestionario_vue_vue_type_template_id_3ab6eb54___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _Cuestionario_vue_vue_type_template_id_3ab6eb54_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Cuestionario_vue_vue_type_template_id_3ab6eb54_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
-  null,
+  "3ab6eb54",
   null
   
 )
@@ -52837,7 +52981,7 @@ component.options.__file = "resources/js/pages/Cuestionario.vue"
 /*!**********************************************************************!*\
   !*** ./resources/js/pages/Cuestionario.vue?vue&type=script&lang=js& ***!
   \**********************************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -52847,19 +52991,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/pages/Cuestionario.vue?vue&type=template&id=3ab6eb54&":
-/*!****************************************************************************!*\
-  !*** ./resources/js/pages/Cuestionario.vue?vue&type=template&id=3ab6eb54& ***!
-  \****************************************************************************/
+/***/ "./resources/js/pages/Cuestionario.vue?vue&type=template&id=3ab6eb54&scoped=true&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/pages/Cuestionario.vue?vue&type=template&id=3ab6eb54&scoped=true& ***!
+  \****************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Cuestionario_vue_vue_type_template_id_3ab6eb54___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Cuestionario.vue?vue&type=template&id=3ab6eb54& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/Cuestionario.vue?vue&type=template&id=3ab6eb54&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Cuestionario_vue_vue_type_template_id_3ab6eb54___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Cuestionario_vue_vue_type_template_id_3ab6eb54_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Cuestionario.vue?vue&type=template&id=3ab6eb54&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/pages/Cuestionario.vue?vue&type=template&id=3ab6eb54&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Cuestionario_vue_vue_type_template_id_3ab6eb54_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Cuestionario_vue_vue_type_template_id_3ab6eb54___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Cuestionario_vue_vue_type_template_id_3ab6eb54_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
