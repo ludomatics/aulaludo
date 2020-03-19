@@ -2040,19 +2040,55 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      indice: 0,
       cuestionario: null,
       preguntas: null,
       pregunta: null,
       respuestas: null,
+      respuestasAEnviar: null,
+      indice: 0,
+      numContestas: 0,
+      encuestaTerminada: true,
+      // Por defecto va en false
       prevButton: {
         'disabled': true
       },
       nextButton: {
         'disabled': false
+      },
+      terminarButton: {
+        'disabled': true
       }
     };
   },
@@ -2072,6 +2108,21 @@ __webpack_require__.r(__webpack_exports__);
     saltarA: function saltarA(index) {
       this.indice = index;
       this.pregunta = this.preguntas[this.indice];
+    },
+    enviarRespuestasUsuario: function enviarRespuestasUsuario() {
+      var url = window.location.origin + '/api/respuestas';
+      axios.post(url, {
+        respuestasUsuario: this.respuestasAEnviar
+      }).then(function (response) {
+        console.log(response);
+      });
+    },
+    terminarEncuesta: function terminarEncuesta() {
+      if (this.numContestas === this.respuestas.length) {
+        this.encuestaTerminada = true;
+      } else {
+        alert('Debes terminar de contestar todas las preguntas');
+      }
     }
   },
   mounted: function mounted() {
@@ -2087,10 +2138,21 @@ __webpack_require__.r(__webpack_exports__);
   },
   watch: {
     respuestas: function respuestas() {
-      console.log(this.respuestas);
+      this.respuestasAEnviar = this.respuestas.filter(function (respuesta) {
+        return respuesta !== '';
+      });
+      this.numContestas = this.respuestasAEnviar.length;
+      console.log(this.respuestasAEnviar);
     },
     indice: function indice() {
-      this.prevButton.disabled = this.indice === 0; //this.nextButton.disabled = this.indice === this.preguntas.length - 1;
+      this.prevButton.disabled = this.indice === 0;
+      this.nextButton.disabled = this.indice === this.preguntas.length - 1;
+    },
+    numContestas: function numContestas() {
+      if (this.numContestas === this.respuestas.length) {
+        this.terminarButton.disabled = false; //this.encuestaTerminada = true;
+      } //this.enviarRespuestasUsuario();
+
     }
   }
 });
@@ -38187,7 +38249,7 @@ var render = function() {
     _c("div", { staticClass: "row justify-content-center" }, [
       _vm._m(0),
       _vm._v(" "),
-      _vm.cuestionario
+      _vm.cuestionario && !_vm.encuestaTerminada
         ? _c("div", { staticClass: "col-md-10 py-4" }, [
             _vm.preguntas
               ? _c("div", { staticClass: "card" }, [
@@ -38214,68 +38276,70 @@ var render = function() {
                   _c(
                     "div",
                     { staticClass: "card-body" },
-                    [
-                      _vm._l(_vm.pregunta.opciones, function(opcion) {
-                        return _c(
-                          "div",
-                          { key: opcion.opcion_id, staticClass: "form-check" },
-                          [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.respuestas[_vm.indice],
-                                  expression: "respuestas[indice]"
-                                }
-                              ],
-                              staticClass: "form-check-input",
-                              attrs: {
-                                type: "radio",
-                                name: "pregunta-" + _vm.indice
-                              },
-                              domProps: {
-                                value: opcion,
-                                checked: _vm._q(
-                                  _vm.respuestas[_vm.indice],
+                    _vm._l(_vm.pregunta.opciones, function(opcion) {
+                      return _c(
+                        "div",
+                        { key: opcion.opcion_id, staticClass: "form-check" },
+                        [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.respuestas[_vm.indice],
+                                expression: "respuestas[indice]"
+                              }
+                            ],
+                            staticClass: "form-check-input",
+                            attrs: {
+                              type: "radio",
+                              name: "pregunta-" + _vm.indice
+                            },
+                            domProps: {
+                              value: opcion,
+                              checked: _vm._q(
+                                _vm.respuestas[_vm.indice],
+                                opcion
+                              )
+                            },
+                            on: {
+                              change: function($event) {
+                                return _vm.$set(
+                                  _vm.respuestas,
+                                  _vm.indice,
                                   opcion
                                 )
-                              },
-                              on: {
-                                change: function($event) {
-                                  return _vm.$set(
-                                    _vm.respuestas,
-                                    _vm.indice,
-                                    opcion
-                                  )
-                                }
                               }
-                            }),
-                            _vm._v(" "),
-                            _c("label", { staticClass: "form-check-label" }, [
-                              _vm._v(
-                                "\n                            " +
-                                  _vm._s(opcion.opcion) +
-                                  "\n                        "
-                              )
-                            ])
-                          ]
-                        )
-                      }),
-                      _vm._v(" "),
-                      _c("p", [
-                        _vm._v(
-                          "Tu respuesta es " +
-                            _vm._s(_vm.respuestas[_vm.indice].opcion)
-                        )
-                      ])
-                    ],
-                    2
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("label", { staticClass: "form-check-label" }, [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(opcion.opcion) +
+                                "\n                        "
+                            )
+                          ])
+                        ]
+                      )
+                    }),
+                    0
                   ),
                   _vm._v(" "),
                   _c("div", { staticClass: "card-footer text-muted" }, [
                     _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col-md-4 mt-2 text-left" }, [
+                      _c("div", { staticClass: "col-md-2" }, [
+                        _c("p", [
+                          _vm._v(
+                            "P. Resp: " +
+                              _vm._s(_vm.numContestas) +
+                              "/" +
+                              _vm._s(_vm.respuestas.length)
+                          )
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-8 text-center" }, [
                         _c(
                           "button",
                           {
@@ -38283,13 +38347,25 @@ var render = function() {
                             class: _vm.prevButton,
                             on: { click: _vm.anterior }
                           },
-                          [_vm._v("Anterior\n                                ")]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _vm._m(1),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-md-4 mt-2 text-right" }, [
+                          [_vm._v("Anterior\n                            ")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-success",
+                            attrs: {
+                              "data-toggle": "modal",
+                              "data-target": "#ListaReactivosModal"
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                Lista reactivos"
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
                         _c(
                           "button",
                           {
@@ -38297,11 +38373,153 @@ var render = function() {
                             class: _vm.nextButton,
                             on: { click: _vm.siguiente }
                           },
+                          [_vm._v("Siguiente\n                            ")]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-2 text-right" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-danger",
+                            class: _vm.terminarButton,
+                            on: { click: _vm.terminarEncuesta }
+                          },
+                          [_vm._v("\n                                Terminar")]
+                        )
+                      ])
+                    ])
+                  ])
+                ])
+              : _vm._e()
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.encuestaTerminada
+        ? _c("div", { staticClass: "col-md-12 py-4" }, [
+            _vm.preguntas
+              ? _c("div", { staticClass: "card" }, [
+                  _c("div", { staticClass: "card-header" }, [
+                    _c("h5", { staticClass: "card-title text-center" }, [
+                      _vm._v(
+                        "Pregunta " +
+                          _vm._s(_vm.indice + 1) +
+                          " / " +
+                          _vm._s(this.preguntas.length) +
+                          " "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "card-text" }, [
+                      _vm._v(
+                        " " +
+                          _vm._s(_vm.pregunta.pregunta) +
+                          "\n                    "
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "card-body" },
+                    _vm._l(_vm.pregunta.opciones, function(opcion) {
+                      return _c(
+                        "div",
+                        { key: opcion.opcion_id, staticClass: "form-check" },
+                        [
+                          _c(
+                            "label",
+                            { staticClass: "form-check-label mr-4" },
+                            [_vm._v("✔")]
+                          ),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.respuestas[_vm.indice],
+                                expression: "respuestas[indice]"
+                              }
+                            ],
+                            staticClass: "form-check-input",
+                            attrs: {
+                              type: "radio",
+                              disabled: "",
+                              name: "pregunta-" + _vm.indice
+                            },
+                            domProps: {
+                              value: opcion,
+                              checked: _vm._q(
+                                _vm.respuestas[_vm.indice],
+                                opcion
+                              )
+                            },
+                            on: {
+                              change: function($event) {
+                                return _vm.$set(
+                                  _vm.respuestas,
+                                  _vm.indice,
+                                  opcion
+                                )
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "label",
+                            { staticClass: "form-check-label text-success" },
+                            [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(opcion.opcion) +
+                                  "\n                        "
+                              )
+                            ]
+                          )
+                        ]
+                      )
+                    }),
+                    0
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "card-footer text-muted" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-md-12 text-center" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary",
+                            class: _vm.prevButton,
+                            on: { click: _vm.anterior }
+                          },
+                          [_vm._v("Anterior\n                            ")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-success",
+                            attrs: {
+                              "data-toggle": "modal",
+                              "data-target": "#ListaReactivosModal"
+                            }
+                          },
                           [
                             _vm._v(
-                              "Siguiente\n                                "
+                              "\n                                Lista reactivos"
                             )
                           ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary",
+                            class: _vm.nextButton,
+                            on: { click: _vm.siguiente }
+                          },
+                          [_vm._v("Siguiente\n                            ")]
                         )
                       ])
                     ])
@@ -38330,11 +38548,11 @@ var render = function() {
           { staticClass: "modal-dialog", attrs: { role: "document" } },
           [
             _c("div", { staticClass: "modal-content" }, [
-              _vm._m(2),
+              _vm._m(1),
               _vm._v(" "),
               _c("div", { staticClass: "modal-body" }, [
                 _c("div", { staticClass: "container" }, [
-                  _c("nav", { attrs: { "aria-label": "..." } }, [
+                  _c("nav", { attrs: { "aria-label": "lista-reactivos" } }, [
                     _c(
                       "ul",
                       { staticClass: "pagination justify-content-center" },
@@ -38392,24 +38610,6 @@ var staticRenderFns = [
       _c("h4", [_vm._v("Cuestionario")]),
       _vm._v(" "),
       _c("h5", [_vm._v("Matemáticas. Jerarquía de operaciones")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-4 mt-2 text-center" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-success",
-          attrs: {
-            "data-toggle": "modal",
-            "data-target": "#ListaReactivosModal"
-          }
-        },
-        [_vm._v("\n                                    Lista reactivos")]
-      )
     ])
   },
   function() {
