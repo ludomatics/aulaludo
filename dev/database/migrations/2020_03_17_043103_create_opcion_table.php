@@ -16,6 +16,8 @@ class CreateOpcionTable extends Migration
         Schema::create('opcion', function (Blueprint $table) {
             $table->bigIncrements('opcion_id');
             $table->string('opcion');
+            $table->boolean('es_correcta')->default(false);
+            $table->string('imagen')->nullable();
             $table->unsignedBigInteger('pregunta_id');
             $table->timestamps();
             // Recordar agregar banderas para procesar si la opcion es una imagen.

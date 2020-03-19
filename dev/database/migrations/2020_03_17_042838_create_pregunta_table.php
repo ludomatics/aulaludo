@@ -17,12 +17,7 @@ class CreatePreguntaTable extends Migration
             $table->bigIncrements('pregunta_id');
             $table->string('pregunta');
             $table->string('imagen')->nullable();
-            $table->unsignedBigInteger('respuesta_correcta_id')->nullable();
             $table->timestamps();
-
-            $table->foreign('respuesta_correcta_id')
-                ->references('opcion_id')
-                ->on('opcion');
         });
     }
 

@@ -21,10 +21,18 @@ class CuestionarioSeeder extends Seeder
                 $pregunta->pregunta = $faker->paragraph();
                 $pregunta->save();
                 $cuestionario->preguntas()->attach($pregunta);
+                $randomNum = $faker -> numberBetween(1,4);
                 for ($k = 0; $k < 4; $k++){
-                    $pregunta->opciones()->create([
-                       'opcion' => $faker->sentence()
-                    ]);
+                    if ($randomNum == $k + 1){
+                        $pregunta->opciones()->create([
+                            'opcion' => $faker->sentence(),
+                            'es_correcta' => true
+                        ]);
+                    }else{
+                        $pregunta->opciones()->create([
+                            'opcion' => $faker->sentence()
+                        ]);
+                    }
                 }
             }
         }
